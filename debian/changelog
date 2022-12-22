@@ -1,0 +1,51 @@
+python-tabulate (0.8.7-0.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * New upstream release.
+  * upstream README updated from .rst to .md
+
+ -- Drew Parsons <dparsons@debian.org>  Fri, 23 Oct 2020 19:03:25 +0800
+
+python-tabulate (0.8.2-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Drop python2 support; Closes: #938209
+  * Remove myself from Uploaders
+  * Remove Vcs-* fields, it is no longer maintained in DPMT; Closes: #923543
+
+ -- Sandro Tosi <morph@debian.org>  Thu, 24 Oct 2019 19:44:45 -0400
+
+python-tabulate (0.8.2-1) unstable; urgency=medium
+
+  * New maintainer. Closes: #888214
+  * New upstream release
+
+ -- Yago González <yagogonzalezg@gmail.com>  Sat, 17 Mar 2018 20:57:26 +0100
+
+python-tabulate (0.7.7-1) unstable; urgency=medium
+
+  [ Sandro Tosi ]
+  * New upstream release
+  * debian/control
+    - adjust Vcs-Browser to DPMT standards
+  * debian/control
+    - update upstream copyright years
+    - add copyright for my contributions
+    - add wcwidth to b-d
+    - bump Standards-Version to 3.9.8 (no changes needed)
+  * debian/python-tabulate.examples
+    - dont install benchmarl.py in py2 package, remove from the tarball
+  * debian/rules
+    - dont run tests (for now)
+  * compat level 10
+
+  [ Ondřej Nový ]
+  * Fixed VCS URL (https)
+
+ -- Sandro Tosi <morph@debian.org>  Fri, 16 Dec 2016 19:37:17 -0500
+
+python-tabulate (0.7.5-1) unstable; urgency=low
+
+  * Initial release (Closes: #782140)
+
+ -- ChangZhuo Chen (陳昌倬) <czchen@gmail.com>  Wed, 08 Apr 2015 19:29:08 +0800
