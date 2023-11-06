@@ -5,7 +5,7 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 from tabulate import tabulate, _text_type, _long_type, TableFormat, Line, DataRow
-from common import assert_equal, assert_in, SkipTest
+from common import assert_equal, assert_in, skip
 
 
 def test_ansi_color_in_table_cells():
@@ -41,6 +41,52 @@ def test_alignment_of_colored_cells():
             "+--------+--------+--------+",
             "| test   |    101 |    \x1b[32m101\x1b[0m |",
             "+--------+--------+--------+",
+        ]
+    )
+    print("expected: %r\n\ngot:      %r\n" % (expected, formatted))
+    assert_equal(expected, formatted)
+
+
+def test_alignment_of_link_cells():
+    "Regression: Align links as if they were colorless."
+    linktable = [
+        ("test", 42, "\x1b]8;;target\x1b\\test\x1b]8;;\x1b\\"),
+        ("test", 101, "\x1b]8;;target\x1b\\test\x1b]8;;\x1b\\"),
+    ]
+    linkheaders = ("test", "\x1b]8;;target\x1b\\test\x1b]8;;\x1b\\", "test")
+    formatted = tabulate(linktable, linkheaders, "grid")
+    expected = "\n".join(
+        [
+            "+--------+--------+--------+",
+            "| test   |   \x1b]8;;target\x1b\\test\x1b]8;;\x1b\\ | test   |",
+            "+========+========+========+",
+            "| test   |     42 | \x1b]8;;target\x1b\\test\x1b]8;;\x1b\\   |",
+            "+--------+--------+--------+",
+            "| test   |    101 | \x1b]8;;target\x1b\\test\x1b]8;;\x1b\\   |",
+            "+--------+--------+--------+",
+        ]
+    )
+    print("expected: %r\n\ngot:      %r\n" % (expected, formatted))
+    assert_equal(expected, formatted)
+
+
+def test_alignment_of_link_text_cells():
+    "Regression: Align links as if they were colorless."
+    linktable = [
+        ("test", 42, "1\x1b]8;;target\x1b\\test\x1b]8;;\x1b\\2"),
+        ("test", 101, "3\x1b]8;;target\x1b\\test\x1b]8;;\x1b\\4"),
+    ]
+    linkheaders = ("test", "5\x1b]8;;target\x1b\\test\x1b]8;;\x1b\\6", "test")
+    formatted = tabulate(linktable, linkheaders, "grid")
+    expected = "\n".join(
+        [
+            "+--------+----------+--------+",
+            "| test   |   5\x1b]8;;target\x1b\\test\x1b]8;;\x1b\\6 | test   |",
+            "+========+==========+========+",
+            "| test   |       42 | 1\x1b]8;;target\x1b\\test\x1b]8;;\x1b\\2 |",
+            "+--------+----------+--------+",
+            "| test   |      101 | 3\x1b]8;;target\x1b\\test\x1b]8;;\x1b\\4 |",
+            "+--------+----------+--------+",
         ]
     )
     print("expected: %r\n\ngot:      %r\n" % (expected, formatted))
@@ -226,6 +272,19 @@ def test_alignment_of_decimal_numbers_with_ansi_color():
     assert_equal(result, expected)
 
 
+def test_alignment_of_decimal_numbers_with_commas():
+    "Regression: alignment for decimal numbers with comma separators"
+    skip("test is temporarily disable until the feature is reimplemented")
+    # table = [["c1r1", "14502.05"], ["c1r2", 105]]
+    # result = tabulate(table, tablefmt="grid", floatfmt=',.2f')
+    # expected = "\n".join(
+    #    ['+------+-----------+', '| c1r1 | 14,502.05 |',
+    #    '+------+-----------+', '| c1r2 |    105.00 |',
+    #    '+------+-----------+']
+    # )
+    # assert_equal(result, expected)
+
+
 def test_long_integers():
     "Regression: long integers should be printed as integers (issue #48)"
     table = [[18446744073709551614]]
@@ -273,8 +332,27 @@ def test_mix_normal_and_wide_characters():
         )
         assert_equal(result, expected)
     except ImportError:
-        print("test_mix_normal_and_wide_characters is skipped (requires wcwidth lib)")
-        raise SkipTest()
+        skip("test_mix_normal_and_wide_characters is skipped (requires wcwidth lib)")
+
+
+def test_multiline_with_wide_characters():
+    "Regression: multiline tables with varying number of wide characters (github issue #28)"
+    try:
+        import wcwidth  # noqa
+
+        table = [["가나\n가ab", "가나", "가나"]]
+        result = tabulate(table, tablefmt="fancy_grid")
+        expected = "\n".join(
+            [
+                "╒══════╤══════╤══════╕",
+                "│ 가나 │ 가나 │ 가나 │",
+                "│ 가ab │      │      │",
+                "╘══════╧══════╧══════╛",
+            ]
+        )
+        assert_equal(result, expected)
+    except ImportError:
+        skip("test_multiline_with_wide_characters is skipped (requires wcwidth lib)")
 
 
 def test_align_long_integers():
@@ -295,7 +373,7 @@ def test_numpy_array_as_headers():
         expected = "foo    bar"
         assert_equal(result, expected)
     except ImportError:
-        raise SkipTest()
+        raise skip("")
 
 
 def test_boolean_columns():
@@ -383,3 +461,11 @@ def test_custom_tablefmt():
     expected = "\n".join(["A    B", "---  ---", "foo  bar", "baz  qux"])
     result = tabulate(rows, headers=["A", "B"], tablefmt=tablefmt)
     assert_equal(result, expected)
+
+
+def test_string_with_comma_between_digits_without_floatfmt_grouping_option():
+    "Regression: accept commas in numbers-as-text when grouping is not defined (github issue #110)"
+    table = [["126,000"]]
+    expected = "126,000"
+    result = tabulate(table, tablefmt="plain")
+    assert_equal(result, expected)  # no exception
