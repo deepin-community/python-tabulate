@@ -38,7 +38,7 @@ else:
 
 setup(
     name="tabulate",
-    version="0.8.7",
+    version="0.8.9",
     description="Pretty-print tabular data",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
@@ -57,10 +57,10 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Software Development :: Libraries",
     ],
     py_modules=["tabulate"],
     entry_points={"console_scripts": console_scripts},
     extras_require={"widechars": ["wcwidth"]},
-    test_suite="nose.collector",
 )

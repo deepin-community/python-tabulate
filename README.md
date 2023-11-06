@@ -149,10 +149,13 @@ Supported table formats are:
 -   "moinmoin"
 -   "youtrack"
 -   "html"
+-   "unsafehtml"
 -   "latex"
 -   "latex\_raw"
 -   "latex\_booktabs"
+-   "latex\_longtable"
 -   "textile"
+-   "tsv"
 
 `plain` tables do not use any pseudo-graphics to draw lines:
 
@@ -175,7 +178,7 @@ extensions](http://johnmacfarlane.net/pandoc/README.html#tables):
     eggs      451
     bacon       0
 
-`github` follows the conventions of Github flavored Markdown. It
+`github` follows the conventions of GitHub flavored Markdown. It
 corresponds to the `pipe` format without alignment colons:
 
     >>> print(tabulate(table, headers, tablefmt="github"))
@@ -334,7 +337,8 @@ MediaWiki-based sites:
 
 `html` produces standard HTML markup as an html.escape'd str
 with a ._repr_html_ method so that Jupyter Lab and Notebook display the HTML
-and a .str property so that the raw HTML remains accessible:
+and a .str property so that the raw HTML remains accessible.
+`unsafehtml` table format can be used if an unescaped HTML is required:
 
     >>> print(tabulate(table, headers, tablefmt="html"))
     <table>
@@ -366,6 +370,9 @@ special characters.
 
 `latex_booktabs` creates a `tabular` environment for LaTeX markup using
 spacing and style from the `booktabs` package.
+
+`latex_longtable` creates a table that can stretch along multiple pages,
+using the `longtable` package.
 
 ### Column alignment
 
@@ -649,7 +656,7 @@ Usage of the command line utility
     -f FMT, --format FMT      set output table format; supported formats:
                               plain, simple, github, grid, fancy_grid, pipe,
                               orgtbl, rst, mediawiki, html, latex, latex_raw,
-                              latex_booktabs, tsv
+                              latex_booktabs, latex_longtable, tsv
                               (default: simple)
 
 Performance considerations
@@ -666,24 +673,25 @@ as a number imply that `tabulate`:
 It may not be suitable for serializing really big tables (but who's
 going to do that, anyway?) or printing tables in performance sensitive
 applications. `tabulate` is about two orders of magnitude slower than
-simply joining lists of values with a tab, coma or other separator.
+simply joining lists of values with a tab, comma, or other separator.
 
-In the same time `tabulate` is comparable to other table
+At the same time, `tabulate` is comparable to other table
 pretty-printers. Given a 10x10 table (a list of lists) of mixed text and
 numeric data, `tabulate` appears to be slower than `asciitable`, and
 faster than `PrettyTable` and `texttable` The following mini-benchmark
-was run in Python 3.8.1 in Windows 10 x64:
+was run in Python 3.8.3 in Windows 10 x64:
 
-    ===========================  ==========  ===========
-    Table formatter                time, μs    rel. time
-    ===========================  ==========  ===========
-    csv to StringIO                    12.4          1.0
-    join with tabs and newlines        15.7          1.3
-    asciitable (0.8.0)                208.3         16.7
-    tabulate (0.8.7)                  492.1         39.5
-    PrettyTable (0.7.2)               945.5         76.0
-    texttable (1.6.2)                1239.5         99.6
-    ===========================  ==========  ===========
+    =================================  ==========  ===========
+    Table formatter                      time, μs    rel. time
+    =================================  ==========  ===========
+    csv to StringIO                          12.5          1.0
+    join with tabs and newlines              15.6          1.3
+    asciitable (0.8.0)                      191.4         15.4
+    tabulate (0.8.9)                        472.8         38.0
+    tabulate (0.8.9, WIDE_CHARS_MODE)       789.6         63.4
+    PrettyTable (0.7.2)                     879.1         70.6
+    texttable (1.6.2)                      1352.2        108.6
+    =================================  ==========  ===========
 
 
 Version history
@@ -698,13 +706,13 @@ Contributions should include tests and an explanation for the changes
 they propose. Documentation (examples, docstrings, README.md) should be
 updated accordingly.
 
-This project uses [nose](https://nose.readthedocs.org/) testing
+This project uses [pytest](https://docs.pytest.org/) testing
 framework and [tox](https://tox.readthedocs.io/) to automate testing in
 different environments. Add tests to one of the files in the `test/`
 folder.
 
 To run tests on all supported Python versions, make sure all Python
-interpreters, `nose` and `tox` are installed, then run `tox` in the root
+interpreters, `pytest` and `tox` are installed, then run `tox` in the root
 of the project source tree.
 
 On Linux `tox` expects to find executables like `python2.6`,
@@ -712,21 +720,25 @@ On Linux `tox` expects to find executables like `python2.6`,
 `C:\Python26\python.exe`, `C:\Python27\python.exe` and
 `C:\Python34\python.exe` respectively.
 
-To test only some Python environements, use `-e` option. For example, to
-test only against Python 2.7 and Python 3.6, run:
+To test only some Python environments, use `-e` option. For example, to
+test only against Python 2.7 and Python 3.8, run:
 
-    tox -e py27,py36
+    tox -e py27,py38
 
 in the root of the project source tree.
 
 To enable NumPy and Pandas tests, run:
 
-    tox -e py27-extra,py36-extra
+    tox -e py27-extra,py38-extra
 
 (this may take a long time the first time, because NumPy and Pandas will
 have to be installed in the new virtual environments)
 
-See `tox.ini` file to learn how to use `nosetests` directly to test
+To fix code formatting:
+
+    tox -e lint
+
+See `tox.ini` file to learn how to use to test
 individual Python versions.
 
 Contributors
@@ -742,5 +754,8 @@ Maier, Andy MacKinlay, Thomas Roten, Jue Wang, Joe King, Samuel Phan,
 Nick Satterly, Daniel Robbins, Dmitry B, Lars Butler, Andreas Maier,
 Dick Marinus, Sébastien Celles, Yago González, Andrew Gaul, Wim Glenn,
 Jean Michel Rouly, Tim Gates, John Vandenberg, Sorin Sbarnea,
-Wes Turner, Andrew Tija, Marco Gorelli, Sean McGinnis.
-
+Wes Turner, Andrew Tija, Marco Gorelli, Sean McGinnis, danja100,
+endolith, Dominic Davis-Foster, pavlocat, Daniel Aslau, paulc,
+Felix Yan, Shane Loretz, Frank Busse, Harsh Singh, Derek Weitzel,
+Vladimir Vrzić, 서승우 (chrd5273), Georgy Frolov, Christian Cwienk,
+Bart Broere, Vilhelm Prytz.

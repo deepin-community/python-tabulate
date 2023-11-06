@@ -4,6 +4,3 @@ export PYBUILD_NAME = tabulate
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild
-
-override_dh_auto_test:
-	echo "https://bitbucket.org/astanin/python-tabulate/issues/106/test-commonpy-not-release-in-pypi-tarball"

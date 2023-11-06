@@ -1,3 +1,38 @@
+python-tabulate (0.8.9-1) unstable; urgency=medium
+
+  [ Yago González ]
+  * New upstream release.
+  * Remove git-dpm in favour of gbp.
+  * Set debian/master as the Debianized branch, following DPT's Policy.
+  * Remove unused python3-nose dependency.
+  * Remove patch for FTBFS issue with Python 3.10 (solved upstream).
+  * Update references of upstream repo.
+  * Set Vcs-* to new DPT repo.
+  * Add myself to d/copyright for debian/*.
+  * Upgrade debian/watch to v4.
+  * Upgrade debian/control to Standards Version 4.6.0.
+  * Upgrade debhelper-compat to v13.
+  * Update upstream copyright.
+  * Set the Debian Python Team as the maintainer.
+
+  [ Ondřej Nový ]
+  * Use https protocol in Format field.
+  * Use https protocol in watch URL.
+
+  [ Gordon Ball ]
+  * Update Standards-Version to 4.3.0.
+  * Declare Testsuite: autopkgtest-pkg-python so importability is tested.
+  * Re-enable build time tests.
+
+ -- Yago González <yagogonzalezg@gmail.com>  Wed, 08 Dec 2021 18:12:11 +0000
+
+python-tabulate (0.8.7-0.2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add patch to fix FTBFS with python 3.10 (Closes: #1000742)
+
+ -- Nilesh Patra <nilesh@debian.org>  Sat, 04 Dec 2021 16:25:24 +0000
+
 python-tabulate (0.8.7-0.1) unstable; urgency=medium
 
   * Non-maintainer upload.

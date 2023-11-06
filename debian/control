@@ -1,16 +1,19 @@
 Source: python-tabulate
 Priority: optional
-Maintainer: Yago González <yagogonzalezg@gmail.com>
-Uploaders: ChangZhuo Chen (陳昌倬) <czchen@debian.org>,
-Build-Depends: debhelper (>= 10),
+Maintainer: Debian Python Team <team+python@tracker.debian.org>
+Uploaders: Yago González <yagogonzalezg@gmail.com>,
+ ChangZhuo Chen (陳昌倬) <czchen@debian.org>
+Build-Depends: debhelper-compat (= 13),
                dh-python,
                python3-all,
-               python3-nose,
                python3-setuptools,
                python3-wcwidth,
-Standards-Version: 3.9.8
+Standards-Version: 4.6.0
 Section: python
-Homepage: https://bitbucket.org/astanin/python-tabulate/
+Homepage: https://github.com/astanin/python-tabulate/
+Vcs-Git: https://salsa.debian.org/python-team/packages/python-tabulate.git
+Vcs-Browser: https://salsa.debian.org/python-team/packages/python-tabulate
+Testsuite: autopkgtest-pkg-python
 
 Package: python3-tabulate
 Architecture: all
