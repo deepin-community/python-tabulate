@@ -3,14 +3,16 @@ Upstream-Name: python-tabulate
 Source: https://github.com/astanin/python-tabulate
 
 Files: *
-Copyright: Copyright (c) 2011-2020 Sergey Astanin <s.astanin@gmail.com> and
+Copyright: Copyright (c) 2011-2022 Sergey Astanin <s.astanin@gmail.com> and
  contributors
 License: Expat
+Comment: the upstream notice says 2011-2020 but development continued after that
 
 Files: debian/*
 Copyright: 2015 ChangZhuo Chen (陳昌倬) <czchen@debian.org>
  2016 Sandro Tosi <morph@debian.org>
  2018-2021 Yago González <yagogonzalezg@gmail.com>
+ 2015-2024 Debian Python Team
 License: Expat
 
 License: Expat

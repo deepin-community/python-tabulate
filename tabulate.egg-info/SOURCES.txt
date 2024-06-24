@@ -1,11 +1,19 @@
+.gitignore
+.pre-commit-config.yaml
 CHANGELOG
+HOWTOPUBLISH
 LICENSE
 MANIFEST.in
 README
 README.md
+appveyor.yml
 benchmark.py
-setup.py
-tabulate.py
+pyproject.toml
+tox.ini
+.circleci/config.yml
+.circleci/requirements.txt
+tabulate/__init__.py
+tabulate/version.py
 tabulate.egg-info/PKG-INFO
 tabulate.egg-info/SOURCES.txt
 tabulate.egg-info/dependency_links.txt
@@ -19,3 +27,4 @@ test/test_input.py
 test/test_internal.py
 test/test_output.py
 test/test_regression.py
+test/test_textwrapper.py

@@ -1,0 +1,8 @@
+Tests: upstreamtests
+Restrictions: allow-stderr
+Depends: python3-all,
+         python3-tabulate,
+         python3-numpy,
+         python3-pandas,
+         python3-pytest,
+         python3-wcwidth

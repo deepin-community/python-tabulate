@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+SOURCE_ROOT=`pwd`
+# import from the installed version not the source tree, but read tests themselves from the source tree as they aren't installed
+# need to be here as test_cli expects to find the command by a relative path
+cd /usr/lib/python3/dist-packages
+for py in `py3versions -s` ; do
+    # based on upstream tox.ini
+    $py -m pytest -v --doctest-modules /usr/lib/python3/dist-packages/tabulate
+    $py -m pytest -v --doctest-modules $SOURCE_ROOT/test
+done
